@@ -12,7 +12,6 @@
   
 }
 
-/* Login form styling */
 .login-form {
   background-color: rgba(255, 255, 255, 0.95);
   padding: 40px 30px;
@@ -53,7 +52,7 @@
 
 .password-container input {
   flex: 1;
-  padding-right: 40px; /* space for icon */
+  padding-right: 40px; 
 }
 
 /* MUI IconButton styling */
