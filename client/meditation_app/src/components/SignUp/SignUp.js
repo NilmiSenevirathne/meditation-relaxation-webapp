@@ -24,8 +24,7 @@ function SignUp() {
 
     //submit function handling
     const handleSubmit = async (e) => {
-        e.preventDefault(); // prevent default reload
-
+        e.preventDefault(); 
         try {
            const res = await axios.post('http://localhost:5000/api/register', formData);
            setMessage(res.data.message || 'User registered successfully');
