@@ -1,6 +1,7 @@
 import {BrowserRouter,Routes,Route} from 'react-router-dom';
 import Landing from './components/LandingPage/Landing';
 import Login from '../src/components/Login/Login';
+import SignUp from './components/SignUp/SignUp';
 
 
 
@@ -11,6 +12,7 @@ function App() {
           <Routes>
              <Route path = '/' element={<Landing/>}></Route>
              <Route path = '/login' element={<Login/>}></Route>
+             <Route path='/signup' element={<SignUp/>}></Route>
 
           </Routes>
        
