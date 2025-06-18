@@ -55,8 +55,11 @@ function SignUp() {
                    <option value="user">User</option>
                    <option value="admin">Admin</option>
                 </select>
-                <button className= 'btn-submit'type='submit' >Register</button>
-                <button className='btn-back' onClick={handleBack}>Back</button>
+
+                <div className='btn-group'>
+                  <button className= 'btn-submit'type='submit' >Register</button>
+                  <button className='btn-back' onClick={handleBack}>Cancel</button>
+                </div>
             </form>
         </div>
     );
