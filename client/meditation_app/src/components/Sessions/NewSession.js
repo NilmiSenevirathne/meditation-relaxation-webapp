@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './newsession.css'; 
 import { useNavigate } from 'react-router-dom';
-import backgroundVideo from '../../assets/landingVideo.mp4'; // import your video file
+import backgroundVideo from '../../assets/landingVideo.mp4'; 
 
 function NewSession() {
   const navigate = useNavigate();
@@ -23,6 +23,7 @@ function NewSession() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  //submit the new session creation form
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
@@ -46,6 +47,7 @@ function NewSession() {
     }
   };
 
+  //cancel button function
   const handleCancel = () => {
     navigate('/dashboard');
   };
