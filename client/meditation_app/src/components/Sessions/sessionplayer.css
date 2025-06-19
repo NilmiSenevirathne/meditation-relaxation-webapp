@@ -182,3 +182,39 @@
   padding: 50px;
   font-size: 18px;
 }
+
+.back-btn {
+  display: inline-flex; /* keep flex layout */
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  margin: 20px auto;  /* this centers horizontally */
+  font-size: 16px;
+  font-weight: 600;
+  color: #1976d2;
+  background-color: transparent;
+  border: 2px solid #1976d2;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  user-select: none;
+  box-shadow: 0 2px 5px rgba(25, 118, 210, 0.3);
+}
+
+.back-btn:hover {
+  background-color: #1976d2;
+  color: white;
+  box-shadow: 0 4px 12px rgba(25, 118, 210, 0.6);
+}
+
+.back-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(25, 118, 210, 0.4);
+}
+
+.back-btn:active {
+  background-color: #115293;
+  border-color: #115293;
+  box-shadow: 0 2px 5px rgba(17, 82, 147, 0.8);
+  color: white;
+}

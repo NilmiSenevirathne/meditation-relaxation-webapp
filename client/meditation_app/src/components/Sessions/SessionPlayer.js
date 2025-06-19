@@ -12,19 +12,20 @@ function SessionPlayer() {
   const [showVolumeControl, setShowVolumeControl] = useState(false);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  
+
   const audioRef = useRef(null);
   const { sessionId } = useParams();
   const navigate = useNavigate();
 
-  // Initialize audio element
+  // Initialize audio element once
   useEffect(() => {
     audioRef.current = new Audio();
     audioRef.current.preload = 'auto';
-    
+
     const updateTime = () => setCurrentTime(audioRef.current.currentTime);
     const updateDuration = () => setDuration(audioRef.current.duration);
-    const handleError = () => {
+    const handleError = (e) => {
+      console.error('Audio failed to load:', audioRef.current.src, e);
       setError('Failed to load audio track');
       setIsLoading(false);
     };
@@ -39,14 +40,12 @@ function SessionPlayer() {
     audioRef.current.addEventListener('ended', handleEnd);
 
     return () => {
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current.removeEventListener('timeupdate', updateTime);
-        audioRef.current.removeEventListener('loadedmetadata', updateDuration);
-        audioRef.current.removeEventListener('error', handleError);
-        audioRef.current.removeEventListener('ended', handleEnd);
-        audioRef.current = null;
-      }
+      audioRef.current.pause();
+      audioRef.current.removeEventListener('timeupdate', updateTime);
+      audioRef.current.removeEventListener('loadedmetadata', updateDuration);
+      audioRef.current.removeEventListener('error', handleError);
+      audioRef.current.removeEventListener('ended', handleEnd);
+      audioRef.current = null;
     };
   }, []);
 
@@ -62,13 +61,14 @@ function SessionPlayer() {
         }
 
         const response = await axios.get(`http://localhost:5000/api/sessions/${sessionId}`, {
-          headers: { Authorization: `Bearer ${token}` }
+          headers: { Authorization: `Bearer ${token}` },
         });
-        
+
+        console.log('Fetched session:', response.data);
         setSession(response.data);
-        
-        if (response.data.audioUrl && audioRef.current) {
-          audioRef.current.src = response.data.audioUrl;
+
+        if (response.data.mediaURL && audioRef.current) {
+          audioRef.current.src = response.data.mediaURL;
           audioRef.current.volume = volume;
         }
       } catch (err) {
@@ -145,7 +145,9 @@ function SessionPlayer() {
         <p className="session-meta">
           {session.duration} min • {session.category}
         </p>
-        <p className="session-time">Today: {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+        <p className="session-time">
+          Today: {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+        </p>
       </div>
 
       <div className="player-container">
@@ -166,16 +168,12 @@ function SessionPlayer() {
         </div>
 
         <div className="controls">
-          <button 
-            className="control-btn" 
-            onClick={handlePlayPause}
-            disabled={isLoading}
-          >
+          <button className="control-btn" onClick={handlePlayPause} disabled={isLoading}>
             {isLoading ? '⌛' : isPlaying ? '⏸️' : '▶️'}
           </button>
-          
+
           <div className="volume-control-container">
-            <button 
+            <button
               className="control-btn"
               onClick={() => setShowVolumeControl(!showVolumeControl)}
               disabled={isLoading}
@@ -210,6 +208,11 @@ function SessionPlayer() {
           <h4>Total Plays</h4>
           <p>{(session.stats?.today || 0) + (session.stats?.yesterday || 0)}</p>
         </div>
+      </div>
+      <div className="back-btn-container">
+         <button className="back-btn" onClick={() => navigate('/dashboard')}>
+          ← Back 
+        </button>
       </div>
     </div>
   );
