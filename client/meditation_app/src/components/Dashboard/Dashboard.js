@@ -31,38 +31,55 @@ function Dashboard() {
   const [sessions, setSessions] = useState([]);
   const [adminStats, setAdminStats] = useState(null);
 
+  // Add logout function
+  const handleLogout = () => {
+    // Clear all user data from localStorage
+    localStorage.removeItem('token');
+    localStorage.removeItem('name');
+    localStorage.removeItem('role');
+    localStorage.removeItem('currentSession');
+    
+    // Redirect to login page
+    window.location.href = '/login'; // Change this to your login route
+  };
+
   useEffect(() => {
+    // Fetch sessions for user only
     if (role !== 'admin') {
-      axios.get('http://localhost:5000/api/sessions')
+      axios.get('http://localhost:5000/api/sessions', {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      })
         .then(res => setSessions(res.data))
         .catch(err => console.error('Failed to load sessions:', err));
     }
 
+    // Fetch admin stats if admin
     if (role === 'admin') {
-      axios.get('http://localhost:5000/api/admin-stats')
+      axios.get('http://localhost:5000/api/admin-stats', {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      })
         .then(res => setAdminStats(res.data))
         .catch(err => console.error('Failed to load admin stats:', err));
     }
   }, [role]);
-
-  // ✅ Logout Function
-  const handleLogout = () => {
-    localStorage.clear();
-    window.location.href = '/login'; // Adjust if your login route differs
-  };
 
   return (
     <div className="dashboard">
       <div className="header">
         <h2>Hello, {name}</h2>
         <p>We Wish you have a good day</p>
-
-        {/* ✅ Logout Button */}
-        <button className="logout-btn" onClick={handleLogout}>
-          🚪 Logout
+        {/* Add logout button */}
+        <button onClick={handleLogout} className="logout-btn">
+          Logout
         </button>
       </div>
 
+      {/* Rest of your component remains the same */}
+      {/* Admin Stats Section */}
       {role === 'admin' && adminStats && (
         <>
           <div className="admin-stats">
@@ -99,6 +116,7 @@ function Dashboard() {
         </>
       )}
 
+      {/* Session Cards Section for external users */}
       {role !== 'admin' && (
         <>
           <div className="sessions">
@@ -114,12 +132,15 @@ function Dashboard() {
                   <p>{session.category}</p>
                   <span className="time">{session.duration} MIN</span>
                 </div>
-                <button
+                 <button
                   className="start-btn"
-                  onClick={() => window.open(session.mediaURL, '_blank')}
+                  onClick={() => {
+                  localStorage.setItem('currentSession', session._id);
+                  window.location.href = `/session/${session._id}`;
+                  }}
                 >
                   START
-                </button>
+                 </button>
               </div>
             ))}
           </div>
