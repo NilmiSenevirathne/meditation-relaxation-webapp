@@ -128,6 +128,53 @@ async function startServer() {
   }
 });
 
+app.post('/api/sessions', async (req, res) => {
+  try {
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) {
+      return res.status(401).json({ message: 'Authentication token required' });
+    }
+
+    // Verify token
+    const decoded = jwt.verify(token, JWT_SECRET);
+
+    // Optional: Ensure only admin can create sessions
+    if (decoded.role !== 'admin') {
+      return res.status(403).json({ message: 'Only admins can create sessions' });
+    }
+
+    const { title, description, category, mediaURL, duration } = req.body;
+
+    // Validate required fields
+    if (!title || !description || !category || !mediaURL || !duration) {
+      return res.status(400).json({ message: 'All fields are required' });
+    }
+
+    const models = getModels(db);
+
+    const newSession = {
+      title,
+      description,
+      category,
+      mediaURL,
+      duration: parseInt(duration),
+      createdAt: new Date()
+    };
+
+    const result = await models.sessions.insertOne(newSession);
+
+    res.status(201).json({ message: 'Session created successfully', sessionId: result.insertedId });
+
+  } catch (err) {
+    if (err.name === 'JsonWebTokenError') {
+      return res.status(401).json({ message: 'Invalid token' });
+    }
+
+    console.error('Error creating session:', err);
+    res.status(500).json({ message: 'Failed to create session' });
+  }
+});
+
     //fetch all details for admins
     app.get('/api/admin-stats', async (req, res) => {
   try {

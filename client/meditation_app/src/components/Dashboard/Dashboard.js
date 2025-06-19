@@ -84,7 +84,15 @@ function Dashboard() {
         <>
           <div className="admin-stats">
             <div className="stat-card">Total Users<br /><strong>{adminStats.totalUsers}</strong></div>
-            <div className="stat-card">Total Sessions<br /><strong>{adminStats.totalSessions}</strong></div>
+            <div 
+               className="stat-card" 
+               style={{ cursor: 'pointer' }} 
+               onClick={() => window.location.href = '/newsession'}  // Adjust this path to your actual route
+            >
+               Total Sessions<br />
+              <strong>{adminStats.totalSessions}</strong>
+            </div>
+
             <div className="stat-card">Reports<br /><strong>{adminStats.totalReports}</strong></div>
           </div>
 

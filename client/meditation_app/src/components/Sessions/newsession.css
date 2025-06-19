@@ -1,0 +1,75 @@
+.new-session-container {
+  max-width: 500px;
+  margin: auto;
+  padding: 20px;
+  border-radius: 12px;
+  background-color: #f7f7f7;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.session-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.session-form label {
+  margin-top: 10px;
+  font-weight: 600;
+}
+
+.session-form input,
+.session-form textarea {
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.session-form textarea {
+  resize: vertical;
+  height: 100px;
+}
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.submit-btn {
+  background-color: #1976d2;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.cancel-btn {
+  background-color: #e53935;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.cancel-btn:hover {
+  background-color: #c62828;
+}
+
+
+
+.error-msg {
+  color: red;
+  margin-top: 15px;
+  text-align: center;
+}
+
+.success-msg {
+  color: green;
+  margin-top: 15px;
+  text-align: center;
+}
+
+
