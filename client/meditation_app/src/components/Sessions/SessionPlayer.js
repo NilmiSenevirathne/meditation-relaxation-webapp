@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -9,8 +8,7 @@ function SessionPlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-
-  const [volume, setVolume] = useState(0.8); 
+  const [volume, setVolume] = useState(0.8);
   const [showVolumeControl, setShowVolumeControl] = useState(false);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -72,7 +70,6 @@ function SessionPlayer() {
         if (response.data.audioUrl && audioRef.current) {
           audioRef.current.src = response.data.audioUrl;
           audioRef.current.volume = volume;
-          // Metadata will load automatically
         }
       } catch (err) {
         console.error('Session fetch error:', err);
@@ -122,50 +119,10 @@ function SessionPlayer() {
 
   const formatTime = (seconds) => {
     if (isNaN(seconds)) return '00:00';
-
-  const [volume, setVolume] = useState(80);
-  const [showVolumeControl, setShowVolumeControl] = useState(false);
-
-  // Get session ID from URL or local storage
-  const sessionId = window.location.pathname.split('/').pop() || localStorage.getItem('currentSession');
-
-  useEffect(() => {
-    // Fetch session details
-    axios.get(`http://localhost:5000/api/sessions/${sessionId}`)
-      .then(res => {
-        setSession(res.data);
-        setDuration(res.data.duration * 60); // Convert minutes to seconds
-      })
-      .catch(err => console.error('Failed to load session:', err));
-  }, [sessionId]);
-
-  const handlePlayPause = () => {
-    setIsPlaying(!isPlaying);
-    // Here you would typically interact with an audio/video player API
-  };
-
-  const handleTimeUpdate = (e) => {
-    setCurrentTime(e.target.currentTime);
-  };
-
-  const handleSeek = (e) => {
-    const newTime = e.target.value;
-    setCurrentTime(newTime);
-    // Here you would seek the audio/video player to newTime
-  };
-
-  const handleVolumeChange = (e) => {
-    setVolume(e.target.value);
-    // Here you would set the volume on the audio/video player
-  };
-
-  const formatTime = (seconds) => {
-
     const mins = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
-
 
   if (error) {
     return (
@@ -177,9 +134,6 @@ function SessionPlayer() {
   }
 
   if (!session || isLoading) {
-
-  if (!session) {
-
     return <div className="loading">Loading session...</div>;
   }
 
@@ -187,13 +141,11 @@ function SessionPlayer() {
     <div className="session-player">
       <div className="player-header">
         <h2>{session.title}</h2>
-
         <p className="session-description">{session.description}</p>
         <p className="session-meta">
           {session.duration} min • {session.category}
-
+        </p>
         <p className="session-time">Today: {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
-
       </div>
 
       <div className="player-container">
@@ -201,18 +153,11 @@ function SessionPlayer() {
           <input
             type="range"
             min="0"
-
             max={duration || 100}
             value={currentTime}
             onChange={handleSeek}
             className="progress-bar"
             disabled={isLoading}
-
-            max={duration}
-            value={currentTime}
-            onChange={handleSeek}
-            className="progress-bar"
-
           />
           <div className="time-display">
             <span>{formatTime(currentTime)}</span>
@@ -221,44 +166,28 @@ function SessionPlayer() {
         </div>
 
         <div className="controls">
-
           <button 
             className="control-btn" 
             onClick={handlePlayPause}
             disabled={isLoading}
           >
             {isLoading ? '⌛' : isPlaying ? '⏸️' : '▶️'}
-
-          <button className="control-btn" onClick={handlePlayPause}>
-            {isPlaying ? '⏸️' : '▶️'}
-
           </button>
           
           <div className="volume-control-container">
             <button 
-
               className="control-btn"
               onClick={() => setShowVolumeControl(!showVolumeControl)}
               disabled={isLoading}
             >
               {volume > 0.5 ? '🔊' : volume > 0 ? '🔉' : '🔇'}
-
-              className="control-btn" 
-              onClick={() => setShowVolumeControl(!showVolumeControl)}
-            >
-              {volume > 50 ? '🔊' : volume > 0 ? '🔉' : '🔇'}
-
             </button>
             {showVolumeControl && (
               <input
                 type="range"
                 min="0"
-
                 max="1"
                 step="0.01"
-
-                max="100"
-
                 value={volume}
                 onChange={handleVolumeChange}
                 className="volume-control"
@@ -267,7 +196,6 @@ function SessionPlayer() {
           </div>
         </div>
       </div>
-
 
       <div className="session-stats">
         <div className="stat-card">
@@ -281,20 +209,6 @@ function SessionPlayer() {
         <div className="stat-card">
           <h4>Total Plays</h4>
           <p>{(session.stats?.today || 0) + (session.stats?.yesterday || 0)}</p>
-
-      <div className="stats-container">
-        <div className="stat-card">
-          <h4>Today</h4>
-          <p>120</p>
-        </div>
-        <div className="stat-card">
-          <h4>Yesterday</h4>
-          <p>350</p>
-        </div>
-        <div className="stat-card">
-          <h4>Reports</h4>
-          <p>15</p>
-
         </div>
       </div>
     </div>
