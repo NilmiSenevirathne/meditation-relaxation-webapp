@@ -3,6 +3,7 @@ const { MongoClient,ObjectId } = require('mongodb');
 const cors = require('cors');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const path = require('path');
 require('dotenv').config();
 
 const {getModels}  =require('./model')
@@ -15,6 +16,7 @@ const uri = process.env.MONGO_URL || 'mongodb://localhost:27017';
 
 //middleware
 app.use(cors());
+app.use('/audio', express.static(path.join(__dirname, 'audio')));
 app.use(express.json());
 
 
