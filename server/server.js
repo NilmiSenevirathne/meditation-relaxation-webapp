@@ -1,5 +1,5 @@
 const express = require('express');
-const { MongoClient } = require('mongodb');
+const { MongoClient,ObjectId } = require('mongodb');
 const cors = require('cors');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -96,6 +96,35 @@ async function startServer() {
             res.status(500).json({ message: 'Failed to fetch sessions' });
         }
     });
+
+  //fetch sesson detailes by Id
+  app.get('/api/sessions/:sessionId', async (req, res) => {
+   try {
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) {
+      return res.status(401).json({ message: 'Authentication required' });
+    }
+
+    jwt.verify(token, JWT_SECRET);
+    
+    const models = getModels(db);
+    const session = await models.sessions.findOne({ 
+      _id: new ObjectId(req.params.sessionId) 
+    });
+
+    if (!session) {
+      return res.status(404).json({ message: 'Session not found' });
+    }
+
+    res.json(session);
+  } catch (err) {
+    if (err.name === 'JsonWebTokenError') {
+      return res.status(401).json({ message: 'Invalid token' });
+    }
+    console.error('Error fetching session:', err);
+    res.status(500).json({ message: 'Failed to fetch session' });
+  }
+});
 
     //fetch all details for admins
     app.get('/api/admin-stats', async (req, res) => {

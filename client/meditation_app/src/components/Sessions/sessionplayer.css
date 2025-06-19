@@ -4,10 +4,28 @@
   padding: 20px;
   font-family: 'Arial', sans-serif;
   color: #333;
+
 }
 
 .player-header {
   text-align: center;
+  margin-bottom: 20px;
+}
+
+.session-description {
+  color: #666;
+  font-style: italic;
+}
+
+.session-meta {
+  color: #888;
+  font-size: 0.9em;
+}
+
+.player-container {
+  background: #f5f5f5;
+  padding: 20px;
+  border-radius: 10px;
   margin-bottom: 30px;
 }
 
@@ -34,6 +52,7 @@
 
 .progress-bar {
   width: 100%;
+  margin: 10px 0;
   height: 6px;
   -webkit-appearance: none;
   appearance: none;
@@ -50,11 +69,13 @@
   border-radius: 50%;
   background: #1976d2;
   cursor: pointer;
+
 }
 
 .time-display {
   display: flex;
   justify-content: space-between;
+  font-size: 0.8em;
   font-size: 12px;
   color: #666;
 }
@@ -65,6 +86,7 @@
   align-items: center;
   gap: 30px;
   margin-top: 20px;
+
 }
 
 .control-btn {
@@ -72,6 +94,32 @@
   border: none;
   font-size: 24px;
   cursor: pointer;
+
+}
+
+.session-stats {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.stat-card {
+  background: #f5f5f5;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  flex: 1;
+  margin: 0 5px;
+}
+
+.error {
+  color: #d32f2f;
+  background: #ffebee;
+  padding: 15px;
+  border-radius: 5px;
+  text-align: center;
+  margin-bottom: 20px;
+
   padding: 10px;
   border-radius: 50%;
   width: 50px;
@@ -124,10 +172,13 @@
   margin: 0;
   font-size: 24px;
   font-weight: bold;
+
 }
 
 .loading {
   text-align: center;
+  padding: 40px;
+  font-size: 1.2em;
   padding: 50px;
   font-size: 18px;
 }
