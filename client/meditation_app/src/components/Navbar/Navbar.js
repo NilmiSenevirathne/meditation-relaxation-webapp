@@ -9,9 +9,7 @@ function Navbar() {
        </div>
 
        <ul className='navbar-links'>
-        
-         <li><a href=''>About</a></li>
-         <li><a href='/signup'>SignUp</a></li>
+          <li><a href='/signup'>SignUp</a></li>
          
        </ul>
     </nav>

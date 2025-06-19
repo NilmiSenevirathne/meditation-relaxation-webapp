@@ -1,12 +1,12 @@
 /* Fullscreen wrapper */
 .new-session-wrapper {
   position: fixed;
-  inset: 0; /* top:0; right:0; bottom:0; left:0; */
+  inset: 0; 
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(0,0,0,0.4); /* fallback color */
+  background-color: rgba(0,0,0,0.4); 
   z-index: 0;
 }
 
@@ -19,7 +19,7 @@
   height: 100vh;
   object-fit: cover;
   z-index: -1;
-  filter: brightness(0.6); /* dim video for contrast */
+  filter: brightness(0.6); 
 }
 
 /* Form container */
@@ -28,14 +28,14 @@
   width: 90%;
   padding: 30px 25px;
   border-radius: 12px;
-  background-color: rgba(255, 255, 255, 0.15); /* more transparent */
-  backdrop-filter: blur(12px); /* blur effect on the background behind the form */
-  -webkit-backdrop-filter: blur(12px); /* for Safari */
+  background-color: rgba(255, 255, 255, 0.15); 
+  backdrop-filter: blur(12px); 
+  -webkit-backdrop-filter: blur(12px); 
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
   z-index: 1;
-  color: #fff; /* lighter text for contrast */
+  color: #fff; 
   box-sizing: border-box;
-  border: 1px solid rgba(255, 255, 255, 0.3); /* subtle border to define form edges */
+  border: 1px solid rgba(255, 255, 255, 0.3); 
 }
 
 /* Form styles */
@@ -114,7 +114,7 @@
   text-align: center;
 }
 
-/* Responsive */
+
 @media (max-width: 600px) {
   .button-group {
     flex-direction: column;

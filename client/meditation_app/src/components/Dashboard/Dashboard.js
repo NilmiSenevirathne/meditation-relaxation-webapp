@@ -14,7 +14,7 @@ import {
   Legend
 } from 'chart.js';
 
-// Register chart.js modules
+
 Chart.register(
   LineElement,
   CategoryScale,
@@ -34,7 +34,7 @@ function Dashboard() {
 
   // Add logout function
   const handleLogout = () => {
-    // Clear all user data from localStorage
+    // Clear all user data from localStorage when logout
     localStorage.removeItem('token');
     localStorage.removeItem('name');
     localStorage.removeItem('role');
@@ -77,13 +77,13 @@ function Dashboard() {
       <div className="header">
         <h2>Hello, {name}</h2>
         <p>We Wish you have a good day !</p>
-        {/* Add logout button */}
+       
         <button onClick={handleLogout} className="logout-btn">
           Logout
         </button>
       </div>
 
-      {/* Rest of your component remains the same */}
+      
       {/* Admin Stats Section */}
       {role === 'admin' && adminStats && (
         <>
