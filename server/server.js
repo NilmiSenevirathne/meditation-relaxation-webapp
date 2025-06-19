@@ -5,6 +5,8 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
+const {getModels}  =require('./model')
+
 
 const app = express();
 const PORT = 5000;
@@ -82,6 +84,50 @@ async function startServer() {
         res.status(500).json({ message: 'Login failed' });
       }
     });
+
+    //fetch sessions for users 
+    app.get('/api/sessions', async (req, res) => {
+        try {
+          const models = getModels(db);
+          const sessions = await models.sessions.find().toArray();
+          res.json(sessions);
+        } catch (err) {
+            console.error('Error fetching sessions:', err);
+            res.status(500).json({ message: 'Failed to fetch sessions' });
+        }
+    });
+
+    //fetch all details for admins
+    app.get('/api/admin-stats', async (req, res) => {
+  try {
+    const models = getModels(db);
+
+    const totalUsers = await models.users.countDocuments();
+    const totalSessions = await models.sessions.countDocuments();
+    const totalReports = await models.feedback.countDocuments();
+    const history = await models.history.aggregate([
+      {
+        $group: {
+          _id: { $month: '$createdAt' },
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { _id: 1 } },
+    ]).toArray();
+
+    res.json({
+      totalUsers,
+      totalSessions,
+      totalReports,
+      history,
+    });
+  } catch (err) {
+    console.error('Failed to fetch admin stats:', err);
+    res.status(500).json({ message: 'Failed to fetch admin stats' });
+  }
+});
+
+
 
     // Start server after DB connection
     app.listen(PORT, () => {
