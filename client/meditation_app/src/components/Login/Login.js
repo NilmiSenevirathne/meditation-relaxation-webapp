@@ -32,7 +32,7 @@ function Login() {
 
       setMessage('Login successful');
       alert('User Successfully Login !')
-      navigate('/home')
+      navigate('/dashboard')
       
     } catch (err) {
       setMessage(err.response?.data?.message || 'Login failed');
