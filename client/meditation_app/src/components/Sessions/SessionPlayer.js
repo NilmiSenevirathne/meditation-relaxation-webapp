@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './sessionplayer.css';
+import landingVideo from '../../assets/landingVideo.mp4';
 
 function SessionPlayer() {
   const [session, setSession] = useState(null);
@@ -127,6 +128,7 @@ function SessionPlayer() {
   if (error) {
     return (
       <div className="session-player">
+
         <div className="error">{error}</div>
         <button onClick={() => window.location.reload()}>Retry</button>
       </div>
@@ -139,6 +141,9 @@ function SessionPlayer() {
 
   return (
     <div className="session-player">
+      <video className="background-video" autoPlay muted loop>
+         <source src={landingVideo} type="video/mp4" />
+      </video>
       <div className="player-header">
         <h2>{session.title}</h2>
         <p className="session-description">{session.description}</p>
