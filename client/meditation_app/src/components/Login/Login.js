@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import {IconButton} from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import landingVideo from '../../assets/landingVideo.mp4';
 import './login.css'
 
 function Login() {
@@ -46,6 +47,9 @@ function Login() {
 
   return (
     <div className='login-container'>
+      <video className='background-video' autoPlay muted loop>
+         <source src={landingVideo} type='video/mp4' />    
+      </video>
         <form className='login-form' onSubmit={handleSubmit}>
             <h2> Login</h2>
 

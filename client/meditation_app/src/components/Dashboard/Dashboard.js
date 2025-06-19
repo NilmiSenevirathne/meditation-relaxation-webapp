@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './dashboard.css';
 import axios from 'axios';
+import landingVideo from '../../assets/landingVideo.mp4';
 import { Line } from 'react-chartjs-2';
 import {
   Chart,
@@ -69,9 +70,13 @@ function Dashboard() {
 
   return (
     <div className="dashboard">
+       <video className="background-video" autoPlay muted loop>
+         <source src={landingVideo} type="video/mp4" />
+      
+        </video>
       <div className="header">
         <h2>Hello, {name}</h2>
-        <p>We Wish you have a good day</p>
+        <p>We Wish you have a good day !</p>
         {/* Add logout button */}
         <button onClick={handleLogout} className="logout-btn">
           Logout
