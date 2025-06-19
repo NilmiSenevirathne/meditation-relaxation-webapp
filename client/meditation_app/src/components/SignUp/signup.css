@@ -1,12 +1,14 @@
 
 .form-container {
-  max-width: 450px;
+  
+  max-width: 350px;
   margin: 60px auto;
   padding: 40px;
-  background: linear-gradient(145deg, #ffffff, #f2f2f2);
-  border-radius: 15px;
+  background: linear-gradient(145deg, #d6f9e4, #f2f2f2);
+  border-radius: 20px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  justify-content: center;
 }
 
 .form-container h2 {
@@ -28,12 +30,15 @@
 .form-container input,
 .form-container select {
   width: 100%;
-  padding: 12px 15px;
-  margin: 12px 0;
+  padding: 12px;
+  margin-bottom: 20px;
   border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 16px;
-  transition: 0.3s;
+  outline: none;
+  transition: border-color 0.3s;
+  justify-content: center;
+  
 }
 
 .form-container input:focus,
@@ -42,6 +47,18 @@
   border-color: #2980b9;
   box-shadow: 0 0 5px rgba(41, 128, 185, 0.5);
 }
+
+.btn-group {
+  display: flex;
+  justify-content:space-evenly;
+  gap: 5px;
+   
+}
+
+.btn-group {
+  flex: 1;
+}
+
 
 /* Button styling */
 .btn-submit {

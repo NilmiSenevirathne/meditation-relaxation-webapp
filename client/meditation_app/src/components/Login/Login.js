@@ -39,6 +39,10 @@ function Login() {
     }
   }
 
+   //handle back button
+     const handleBack = () => {
+    navigate('/');
+  };
 
   return (
     <div className='login-container'>
@@ -67,8 +71,10 @@ function Login() {
           </IconButton>
          </div>
 
-
-            <button type='submit'>Log in</button>
+          <div className="button-group" >
+            <button  className='submit-btn' type='submit'>Log in</button>
+            <button className='cancel-btn' onClick={handleBack}>Cancel</button>
+          </div>
 
         </form>
       
