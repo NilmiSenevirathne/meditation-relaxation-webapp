@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './newsession.css'; 
 import { useNavigate } from 'react-router-dom';
+import backgroundVideo from '../../assets/landingVideo.mp4'; // import your video file
 
 function NewSession() {
   const navigate = useNavigate();
@@ -46,36 +47,42 @@ function NewSession() {
   };
 
   const handleCancel = () => {
-    navigate('/dashboard'); // Change this path if your cancel destination is different
+    navigate('/dashboard');
   };
 
   return (
-    <div className="new-session-container">
-      <h2>Create New Session</h2>
-      <form onSubmit={handleSubmit} className="session-form">
-        <label>Title:</label>
-        <input type="text" name="title" value={formData.title} onChange={handleChange} required />
+    <div className="new-session-wrapper">
+      <video className="background-video" autoPlay muted loop>
+        <source src={backgroundVideo} type="video/mp4" />
+      </video>
 
-        <label>Description:</label>
-        <textarea name="description" value={formData.description} onChange={handleChange} required />
+      <div className="new-session-container">
+        <h2>Create New Session</h2>
+        <form onSubmit={handleSubmit} className="session-form">
+          <label>Title:</label>
+          <input type="text" name="title" value={formData.title} onChange={handleChange} required />
 
-        <label>Category:</label>
-        <input type="text" name="category" value={formData.category} onChange={handleChange} required />
+          <label>Description:</label>
+          <textarea name="description" value={formData.description} onChange={handleChange} required />
 
-        <label>Media URL:</label>
-        <input type="text" name="mediaURL" value={formData.mediaURL} onChange={handleChange} required />
+          <label>Category:</label>
+          <input type="text" name="category" value={formData.category} onChange={handleChange} required />
 
-        <label>Duration (minutes):</label>
-        <input type="number" name="duration" value={formData.duration} onChange={handleChange} required />
+          <label>Media URL:</label>
+          <input type="text" name="mediaURL" value={formData.mediaURL} onChange={handleChange} required />
 
-        <div className="button-group">
-          <button type="submit" className="submit-btn">Create Session</button>
-          <button type="button" className="cancel-btn" onClick={handleCancel}>Cancel</button>
-        </div>
-      </form>
+          <label>Duration (minutes):</label>
+          <input type="number" name="duration" value={formData.duration} onChange={handleChange} required />
 
-      {error && <p className="error-msg">{error}</p>}
-      {success && <p className="success-msg">{success}</p>}
+          <div className="button-group">
+            <button type="submit" className="submit-btn">Create Session</button>
+            <button type="button" className="cancel-btn" onClick={handleCancel}>Cancel</button>
+          </div>
+        </form>
+
+        {error && <p className="error-msg">{error}</p>}
+        {success && <p className="success-msg">{success}</p>}
+      </div>
     </div>
   );
 }

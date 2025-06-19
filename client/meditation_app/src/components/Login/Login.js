@@ -70,7 +70,7 @@ function Login() {
             onChange={(e) => setPassword(e.target.value)}
             required
            />
-            <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
+            <IconButton onClick={() => setShowPassword(!showPassword)} edge="start">
                {showPassword ? <VisibilityOff /> : <Visibility />}
           </IconButton>
          </div>

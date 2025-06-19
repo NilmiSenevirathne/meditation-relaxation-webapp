@@ -1,12 +1,44 @@
-.new-session-container {
-  max-width: 500px;
-  margin: auto;
-  padding: 20px;
-  border-radius: 12px;
-  background-color: #f7f7f7;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+/* Fullscreen wrapper */
+.new-session-wrapper {
+  position: fixed;
+  inset: 0; /* top:0; right:0; bottom:0; left:0; */
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0,0,0,0.4); /* fallback color */
+  z-index: 0;
 }
 
+/* Background video */
+.background-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  z-index: -1;
+  filter: brightness(0.6); /* dim video for contrast */
+}
+
+/* Form container */
+.new-session-container {
+  max-width: 500px;
+  width: 90%;
+  padding: 30px 25px;
+  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 0.15); /* more transparent */
+  backdrop-filter: blur(12px); /* blur effect on the background behind the form */
+  -webkit-backdrop-filter: blur(12px); /* for Safari */
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+  z-index: 1;
+  color: #fff; /* lighter text for contrast */
+  box-sizing: border-box;
+  border: 1px solid rgba(255, 255, 255, 0.3); /* subtle border to define form edges */
+}
+
+/* Form styles */
 .session-form {
   display: flex;
   flex-direction: column;
@@ -15,6 +47,7 @@
 .session-form label {
   margin-top: 10px;
   font-weight: 600;
+  color: #333;
 }
 
 .session-form input,
@@ -22,14 +55,16 @@
   padding: 10px;
   margin-top: 5px;
   border-radius: 8px;
-  border: 1px solid #ccc;
+  border: 1px solid #8f8d8d;
   font-size: 14px;
+  font-family: inherit;
 }
 
 .session-form textarea {
   resize: vertical;
   height: 100px;
 }
+
 .button-group {
   display: flex;
   justify-content: space-between;
@@ -43,6 +78,13 @@
   border: none;
   border-radius: 8px;
   cursor: pointer;
+  flex: 1;
+  margin-right: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+  background-color: #1565c0;
 }
 
 .cancel-btn {
@@ -52,13 +94,13 @@
   border: none;
   border-radius: 8px;
   cursor: pointer;
+  flex: 1;
+  transition: background-color 0.3s ease;
 }
 
 .cancel-btn:hover {
   background-color: #c62828;
 }
-
-
 
 .error-msg {
   color: red;
@@ -72,4 +114,14 @@
   text-align: center;
 }
 
-
+/* Responsive */
+@media (max-width: 600px) {
+  .button-group {
+    flex-direction: column;
+  }
+  
+  .submit-btn, .cancel-btn {
+    margin: 5px 0;
+    width: 100%;
+  }
+}
