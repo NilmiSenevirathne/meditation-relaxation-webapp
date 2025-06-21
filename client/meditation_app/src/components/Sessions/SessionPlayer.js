@@ -200,20 +200,7 @@ function SessionPlayer() {
         </div>
       </div>
 
-      <div className="session-stats">
-        <div className="stat-card">
-          <h4>Today</h4>
-          <p>{session.stats?.today || 0}</p>
-        </div>
-        <div className="stat-card">
-          <h4>Yesterday</h4>
-          <p>{session.stats?.yesterday || 0}</p>
-        </div>
-        <div className="stat-card">
-          <h4>Total Plays</h4>
-          <p>{(session.stats?.today || 0) + (session.stats?.yesterday || 0)}</p>
-        </div>
-      </div>
+      
       <div className="back-btn-container">
          <button className="back-btn" onClick={() => navigate('/dashboard')}>
           ← Back 

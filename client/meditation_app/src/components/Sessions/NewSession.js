@@ -11,41 +11,54 @@ function NewSession() {
     title: '',
     description: '',
     category: '',
-    mediaURL: '',
-    duration: ''
+    duration: '',
+    audioFile : null
   });
 
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+  const { name, value, files } = e.target;
+  if (name === 'audioFile') {
+    setFormData(prev => ({ ...prev, audioFile: files[0] }));
+  } else {
     setFormData(prev => ({ ...prev, [name]: value }));
-  };
+  }
+};
 
   //submit the new session creation form
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
-    setSuccess('');
+  e.preventDefault();
+  setError('');
+  setSuccess('');
 
-    try {
-      const response = await axios.post('http://localhost:5000/api/sessions', formData, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
-      });
+  try {
+    const data = new FormData();
+    data.append('title', formData.title);
+    data.append('description', formData.description);
+    data.append('category', formData.category);
+    data.append('duration', formData.duration);
+    data.append('audioFile', formData.audioFile);
 
-      if (response.status === 201 || response.status === 200) {
-        setSuccess('Session created successfully!');
-        setFormData({ title: '', description: '', category: '', mediaURL: '', duration: '' });
-        setTimeout(() => navigate('/dashboard'), 1500);
+    const response = await axios.post('http://localhost:5000/api/sessions', data, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${localStorage.getItem('token')}`
       }
-    } catch (err) {
-      setError('Failed to create session. Please try again.');
-      console.error(err);
+    });
+
+    if (response.status === 201) {
+      setSuccess('Session created!');
+      setFormData({ title: '', description: '', category: '', duration: '', audioFile: null });
+      setTimeout(() => navigate('/dashboard'), 1500);
     }
-  };
+  } catch (err) {
+    setError('Failed to create session.');
+    console.error(err);
+  }
+};
+
 
   //cancel button function
   const handleCancel = () => {
@@ -70,9 +83,10 @@ function NewSession() {
           <label>Category:</label>
           <input type="text" name="category" value={formData.category} onChange={handleChange} required />
 
-          <label>Media URL:</label>
-          <input type="text" name="mediaURL" value={formData.mediaURL} onChange={handleChange} required />
+          <label>Audio File:</label>
+          <input type="file" name="audioFile" accept="audio/*" onChange={handleChange} required />
 
+          
           <label>Duration (minutes):</label>
           <input type="number" name="duration" value={formData.duration} onChange={handleChange} required />
 
