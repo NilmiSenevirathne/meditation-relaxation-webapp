@@ -150,7 +150,7 @@ useEffect(() => {
               <div
                 key={session._id}
                 className="session-card"
-                style={{ backgroundColor: ['#A9A1F7', '#FFD494', '#333333','#444444','#555555'][index % 5] }}
+                style={{ backgroundColor: ['#A9A1F7', '#FFD494', '#333333','#444444','#555555'][index % 10] }}
               >
                 <div className="session-info">
                   <span className="emoji">🧘‍♀️</span>
