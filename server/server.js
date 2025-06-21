@@ -205,6 +205,27 @@ app.post('/api/sessions', async (req, res) => {
   }
 });
 
+//fetch all users in admin dashboard
+app.get('/api/users', async (req, res) => {
+  try {
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) {
+      return res.status(401).json({ message: 'Authentication required' });
+    }
+
+    const decoded = jwt.verify(token, JWT_SECRET);
+    if (decoded.role !== 'admin') {
+      return res.status(403).json({ message: 'Only admins can access this data' });
+    }
+
+    const userList = await users.find({}, { projection: { password: 0 } }).toArray(); // exclude password
+    res.json(userList);
+  } catch (err) {
+    console.error('Failed to fetch users:', err);
+    res.status(500).json({ message: 'Failed to fetch users' });
+  }
+});
+
 
 
 
