@@ -66,6 +66,15 @@ function Dashboard() {
   }
 }, [role]);
 
+//load sessions for normal users
+useEffect(() => {
+  if (role !== 'admin') {
+    axios.get('http://localhost:5000/api/sessions')
+      .then(res => setSessions(res.data))
+      .catch(err => console.error('Failed to load sessions:', err));
+  }
+}, [role]);
+
   return (
     <div className="dashboard">
        <video className="background-video" autoPlay muted loop>
@@ -141,7 +150,7 @@ function Dashboard() {
               <div
                 key={session._id}
                 className="session-card"
-                style={{ backgroundColor: ['#A9A1F7', '#FFD494', '#333333'][index % 3] }}
+                style={{ backgroundColor: ['#A9A1F7', '#FFD494', '#333333','#444444','#555555'][index % 5] }}
               >
                 <div className="session-info">
                   <span className="emoji">🧘‍♀️</span>
