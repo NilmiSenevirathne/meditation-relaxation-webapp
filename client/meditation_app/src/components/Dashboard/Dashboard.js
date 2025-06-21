@@ -30,6 +30,7 @@ function Dashboard() {
   const role = localStorage.getItem('role') || 'user';
 
   const [sessions, setSessions] = useState([]);
+  const [userList, setUserList] = useState([])
   const [adminStats, setAdminStats] = useState(null);
 
   // Add logout function
@@ -45,28 +46,25 @@ function Dashboard() {
   };
 
   useEffect(() => {
-    // Fetch sessions for user only
-    if (role !== 'admin') {
-      axios.get('http://localhost:5000/api/sessions', {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
-      })
-        .then(res => setSessions(res.data))
-        .catch(err => console.error('Failed to load sessions:', err));
-    }
+  if (role === 'admin') {
+    axios.get('http://localhost:5000/api/admin-stats', {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    })
+    .then(res => setAdminStats(res.data))
+    .catch(err => console.error('Failed to load admin stats:', err));
 
-    // Fetch admin stats if admin
-    if (role === 'admin') {
-      axios.get('http://localhost:5000/api/admin-stats', {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
-      })
-        .then(res => setAdminStats(res.data))
-        .catch(err => console.error('Failed to load admin stats:', err));
-    }
-  }, [role]);
+    // Fetch users
+    axios.get('http://localhost:5000/api/users', {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    })
+    .then(res => setUserList(res.data))
+    .catch(err => console.error('Failed to load users:', err));
+  }
+}, [role]);
 
   return (
     <div className="dashboard">
@@ -88,7 +86,16 @@ function Dashboard() {
       {role === 'admin' && adminStats && (
         <>
           <div className="admin-stats">
-            <div className="stat-card">Total Users<br /><strong>{adminStats.totalUsers}</strong></div>
+            <div 
+              className="stat-card" 
+              style={{ cursor: 'pointer' }} 
+              onClick={() => {
+              const listSection = document.querySelector('.user-list');
+              listSection?.scrollIntoView({ behavior: 'smooth' });
+            }}  >
+            Total Users<br />
+            <strong>{adminStats.totalUsers}</strong>
+          </div>
             <div 
                className="stat-card" 
                style={{ cursor: 'pointer' }} 
@@ -98,34 +105,31 @@ function Dashboard() {
               <strong>{adminStats.totalSessions}</strong>
             </div>
 
-            <div className="stat-card">Reports<br /><strong>{adminStats.totalReports}</strong></div>
           </div>
 
-          <div className="chart-container">
-            <h4>Session History</h4>
-            <Line
-              data={{
-                labels: adminStats.history.map(item => `Month ${item._id}`),
-                datasets: [{
-                  label: 'Sessions per Month',
-                  data: adminStats.history.map(item => item.count),
-                  borderColor: '#1976d2',
-                  backgroundColor: 'rgba(25, 118, 210, 0.2)',
-                  fill: true,
-                  tension: 0.3
-                }]
-              }}
-              options={{
-                responsive: true,
-                plugins: {
-                  legend: {
-                    display: true,
-                    position: 'top'
-                  }
-                }
-              }}
-            />
-          </div>
+          <div className='user-list'>
+            <h3 style={{ marginBottom: '10px' }}>All Registered Users</h3>
+            <table className="user-table">
+            <thead>
+              <tr>
+                 <th>#</th>
+                 <th>Name</th>
+                 <th>Email</th>
+                 <th>Role</th>
+             </tr>
+            </thead>
+            <tbody>
+              {userList.map((user, index) => (
+                <tr key={user._id}>
+                 <td>{index + 1}</td>
+                 <td>{user.name}</td>
+                 <td>{user.email}</td>
+                 <td>{user.role}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+         </div>
         </>
       )}
 
@@ -158,7 +162,6 @@ function Dashboard() {
             ))}
           </div>
 
-          <h4 className="section-title">Recommended for you</h4>
         </>
       )}
     </div>
