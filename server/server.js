@@ -4,6 +4,7 @@ const cors = require('cors');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const path = require('path');
+const multer = require('multer');
 require('dotenv').config();
 
 const {getModels}  =require('./model')
@@ -128,7 +129,20 @@ async function startServer() {
   }
 });
 
-app.post('/api/sessions', async (req, res) => {
+//attached audio file save in audio folder
+const storage = multer.diskStorage({
+  destination: './audio', 
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + '-' + file.originalname); 
+  }
+});
+
+const upload = multer({ storage });
+
+
+//create new session
+app.post('/api/sessions', upload.single('audioFile'), async (req, res) => {
+
   try {
     const token = req.headers.authorization?.split(' ')[1];
     if (!token) {
@@ -143,13 +157,15 @@ app.post('/api/sessions', async (req, res) => {
       return res.status(403).json({ message: 'Only admins can create sessions' });
     }
 
-    const { title, description, category, mediaURL, duration } = req.body;
+    const { title, description, category, duration } = req.body;
 
     // Validate required fields
-    if (!title || !description || !category || !mediaURL || !duration) {
+    if (!title || !description || !category  || !duration || !req.file) {
       return res.status(400).json({ message: 'All fields are required' });
     }
 
+    const mediaURL = `http://localhost:5000/audio/${req.file.filename}`;
+    
     const models = getModels(db);
 
     const newSession = {
