@@ -92,6 +92,8 @@ async function startServer() {
     app.get('/api/sessions', async (req, res) => {
         try {
           const models = getModels(db);
+
+          //send the array of sessions to the frontend to display
           const sessions = await models.sessions.find().toArray();
           res.json(sessions);
         } catch (err) {
@@ -130,6 +132,7 @@ async function startServer() {
 });
 
 //attached audio file save in audio folder
+//multer disk Stiorage create a custom storage engine
 const storage = multer.diskStorage({
   destination: './audio', 
   filename: (req, file, cb) => {
@@ -152,7 +155,7 @@ app.post('/api/sessions', upload.single('audioFile'), async (req, res) => {
     // Verify token
     const decoded = jwt.verify(token, JWT_SECRET);
 
-    // Optional: Ensure only admin can create sessions
+    // Ensure only admin can create sessions
     if (decoded.role !== 'admin') {
       return res.status(403).json({ message: 'Only admins can create sessions' });
     }
@@ -198,8 +201,7 @@ app.post('/api/sessions', upload.single('audioFile'), async (req, res) => {
 
     const totalUsers = await models.users.countDocuments();
     const totalSessions = await models.sessions.countDocuments();
-    const totalReports = await models.feedback.countDocuments();
-    const history = await models.history.aggregate([
+    ([
       {
         $group: {
           _id: { $month: '$createdAt' },
@@ -212,8 +214,7 @@ app.post('/api/sessions', upload.single('audioFile'), async (req, res) => {
     res.json({
       totalUsers,
       totalSessions,
-      totalReports,
-      history,
+     
     });
   } catch (err) {
     console.error('Failed to fetch admin stats:', err);
@@ -221,7 +222,7 @@ app.post('/api/sessions', upload.single('audioFile'), async (req, res) => {
   }
 });
 
-//fetch all users in admin dashboard
+//fetch all users in admin dashboard , only admin can allow access
 app.get('/api/users', async (req, res) => {
   try {
     const token = req.headers.authorization?.split(' ')[1];
@@ -234,7 +235,8 @@ app.get('/api/users', async (req, res) => {
       return res.status(403).json({ message: 'Only admins can access this data' });
     }
 
-    const userList = await users.find({}, { projection: { password: 0 } }).toArray(); // exclude password
+    //exclude the password field from the display results 
+    const userList = await users.find({}, { projection: { password: 0 } }).toArray(); 
     res.json(userList);
   } catch (err) {
     console.error('Failed to fetch users:', err);
