@@ -2,28 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './dashboard.css';
 import axios from 'axios';
 import landingVideo from '../../assets/landingVideo.mp4';
-import { Line } from 'react-chartjs-2';
-import {
-  Chart,
-  LineElement,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  Title,
-  Tooltip,
-  Legend
-} from 'chart.js';
 
-
-Chart.register(
-  LineElement,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  Title,
-  Tooltip,
-  Legend
-);
 
 function Dashboard() {
   const name = localStorage.getItem('name') || 'User';
