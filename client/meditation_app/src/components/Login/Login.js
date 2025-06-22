@@ -7,6 +7,7 @@ import landingVideo from '../../assets/landingVideo.mp4';
 import './login.css'
 
 function Login() {
+
   const navigate = useNavigate();
 
   const [email , setEmail] = useState("");
@@ -41,7 +42,7 @@ function Login() {
   }
 
    //handle back button
-     const handleBack = () => {
+  const handleBack = () => {
     navigate('/');
   };
 
