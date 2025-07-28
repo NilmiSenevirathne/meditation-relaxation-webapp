@@ -195,13 +195,16 @@ app.post('/api/sessions', upload.single('audioFile'), async (req, res) => {
 });
 
     //fetch all details for admins
-    app.get('/api/admin-stats', async (req, res) => {
+// fetch all details for admins
+app.get('/api/admin-stats', async (req, res) => {
   try {
     const models = getModels(db);
 
     const totalUsers = await models.users.countDocuments();
     const totalSessions = await models.sessions.countDocuments();
-    ([
+
+    // Get monthly user registration stats (by createdAt field)
+    const monthlyRegistrations = await models.users.aggregate([
       {
         $group: {
           _id: { $month: '$createdAt' },
@@ -214,8 +217,9 @@ app.post('/api/sessions', upload.single('audioFile'), async (req, res) => {
     res.json({
       totalUsers,
       totalSessions,
-     
+      monthlyRegistrations,
     });
+
   } catch (err) {
     console.error('Failed to fetch admin stats:', err);
     res.status(500).json({ message: 'Failed to fetch admin stats' });
